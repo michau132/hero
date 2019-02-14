@@ -31,8 +31,6 @@ export class AppComponent implements OnInit {
   }
 
   chosenAbility(userAbility) {
-    console.log(userAbility);
-    console.log(this.computerHero);
     if (!this.hidden) {
       return this.statement = 'Click Next Oponent Button!';
     }

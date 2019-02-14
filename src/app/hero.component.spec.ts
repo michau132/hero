@@ -7,20 +7,20 @@ describe('HeroComponent', () => {
   let fixture;
   let component;
   let expectedHero;
-  beforeEach( async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ HeroComponent ],
+      declarations: [HeroComponent],
     })
-    .compileComponents(); // compile template and css
+      .compileComponents(); // compile template and css
   }));
 
   // synchronous beforeEach
   beforeEach(() => {
     fixture = TestBed.createComponent(HeroComponent);
-    component    = fixture.componentInstance;
+    component = fixture.componentInstance;
 
     // pretend that it was wired to something that supplied a hero
-    expectedHero = { name: 'Goku', powerstats: { strength: 32, intelligence: 30 }, image: {url: 'https://via.placeholder.com/150'}};
+    expectedHero = { name: 'Goku', powerstats: { strength: 32, intelligence: 30 }, image: { url: 'https://via.placeholder.com/150' } };
     component.hero = expectedHero;
     fixture.detectChanges(); // trigger initial data binding
   });
@@ -40,7 +40,7 @@ describe('HeroComponent', () => {
     const heroElement = fixture.debugElement.query(By.css('.hero'));
     component.chosenAbility.subscribe(hero => selectedHero = hero);
     heroElement.triggerEventHandler('click', null);
-    expect(selectedHero).toEqual({ name: 'strength', userValue: 32});
+    expect(selectedHero).toEqual({ name: 'strength', userValue: 32 });
   });
 
   describe('checking heroes list elements', () => {
@@ -59,5 +59,6 @@ describe('HeroComponent', () => {
       fixture.detectChanges();
       expect(allHerosElements[0].classList.contains('hidden')).toBeTruthy();
     });
+
   });
 });
