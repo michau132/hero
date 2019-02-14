@@ -9,40 +9,11 @@ import { AppService } from './app.service';
       <img class="image" [src]="hero.image.url" />
       <ul>
         <li
-          (click)="chooseAbility('combat', hero.powerstats.combat)"
-          [ngClass]="{'visible': endOfMatch}"
+          *ngFor="let stat of objectKeys(hero.powerstats)"
+          [ngClass]="{'hidden': hidden}"
+          (click)="chooseAbility({name: stat, userValue: hero.powerstats[stat]})"
         >
-          Combat: {{hero.powerstats.combat }}
-        </li>
-        <li
-          (click)="chooseAbility('combat', hero.powerstats.durability)"
-          [ngClass]="{'visible': endOfMatch}"
-        >
-          durability: {{hero.powerstats.durability }}
-        </li>
-        <li
-          (click)="chooseAbility('intelligence', hero.powerstats.intelligence)"
-          [ngClass]="{'visible': endOfMatch}"
-        >
-          intelligence: {{hero.powerstats.intelligence }}
-        </li>
-        <li
-          (click)="chooseAbility('power', hero.powerstats.power)"
-          [ngClass]="{'visible': endOfMatch}"
-        >
-          power: {{hero.powerstats.power }}
-        </li>
-        <li
-          (click)="chooseAbility('speed', hero.powerstats.speed)"
-          [ngClass]="{'visible': endOfMatch}"
-        >
-          speed: {{hero.powerstats.speed }}
-        </li>
-        <li
-          (click)="chooseAbility('strength', hero.powerstats.strength)"
-          [ngClass]="{'visible': endOfMatch}"
-        >
-          strength: {{hero.powerstats.strength }}
+          {{stat}} : {{hero.powerstats[stat]}}
         </li>
       </ul>
     </div>
@@ -52,15 +23,28 @@ import { AppService } from './app.service';
     width: 150px;
     height: 150px;
   }
+  li {
+    cursor: pointer;
+  }
+  li:hover {
+    background: coral;
+  }
+  .hidden {
+    display: none;
+  }
   `]
 })
 export class HeroComponent implements OnInit {
-  @Input() hero;
-  @Input() endOfMatch;
+  objectKeys = Object.keys;
+  @Input() hero: any;
+  @Input() hidden;
   @Output() chosenAbility = new EventEmitter();
+  @Input() statement;
 
-  chooseAbility(name, val) {
-    this.chosenAbility.emit('aaaa');
+
+
+  chooseAbility(val) {
+    this.chosenAbility.emit(val);
   }
 
   constructor() { }

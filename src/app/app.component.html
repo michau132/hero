@@ -1,16 +1,16 @@
 <h1>Hi from Hero Fighters</h1>
-
+<h2>{{statement}}</h2>
 <div class="container">
   <div class="box">
     <div>
       <p>Score: {{userScore}}</p>
-      <app-hero [hero]="userHero" (chosenAbility)="a($event)"></app-hero>
+      <app-hero [hero]="userHero" (chosenAbility)="chosenAbility($event)"></app-hero>
     </div>
     <div>
       <p>Score: {{computerScore}}</p>
-      <app-hero [endOfMatch]="endOfMatch" [hero]="computerHero"></app-hero>
+      <app-hero [hidden]="hidden" [hero]="computerHero"></app-hero>
     </div>
   </div>
 </div>
 
-<button>Next Oponent</button>
+<button (click)="playAnotherRound()">Next Oponent</button>
