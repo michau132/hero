@@ -1,56 +1,63 @@
-import { TestBed, ComponentFixture, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { HeroComponent } from './hero.component';
 
-import { Component, DebugElement } from "@angular/core";
-import { By } from "@angular/platform-browser";
+import { By } from '@angular/platform-browser';
 
 describe('HeroComponent', () => {
   let fixture;
-  let comp;
-  let heroDe;
-  let heroEl;
+  let component;
   let expectedHero;
-  beforeEach(async(() => {
+  beforeEach( async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HeroComponent
-      ],
-    }).compileComponents();
+        declarations: [ HeroComponent ],
+    })
+    .compileComponents(); // compile template and css
+  }));
+
+  // synchronous beforeEach
+  beforeEach(() => {
     fixture = TestBed.createComponent(HeroComponent);
-    comp = fixture.componentInstance;
+    component    = fixture.componentInstance;
 
-    // find the hero's DebugElement and element
-    heroDe = fixture.debugElement.query(By.css('.hero'));
-    heroEl = heroDe.nativeElement;
-
-    // mock the hero supplied by the parent component
-    expectedHero = { hero: { id: 42, name: 'Test Name' } };
-
-    // simulate the parent setting the input property with that hero
-    comp.hero = expectedHero;
-
-    // trigger initial data binding
-    fixture.detectChanges();
-  }
-
-  ));
-
-
-
-  it('Setting enabled to false disabled the submit button', () => {
-    console.log(comp)
+    // pretend that it was wired to something that supplied a hero
+    expectedHero = { name: 'Goku', powerstats: { strength: 32, intelligence: 30 }, image: {url: 'https://via.placeholder.com/150'}};
+    component.hero = expectedHero;
+    fixture.detectChanges(); // trigger initial data binding
   });
 
-  // it(`should have as title 'heroApp'`, () => {
-  //   const fixture = TestBed.createComponent(HeroComponent);
-  //   const app = fixture.debugElement.componentInstance;
-  //   expect(app.title).toEqual('heroApp');
-  // });
 
-  // it('should render title in a h1 tag', () => {
-  //   const fixture = TestBed.createComponent(HeroComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.debugElement.nativeElement;
-  //   expect(compiled.querySelector('h1').textContent).toContain('Welcome to heroApp!');
-  // });
+
+  it('should render hero.name as Goku ', () => {
+    expect(component.hero.name).toBe('Goku');
+  });
+
+  it('should render hero.image as https://via.placeholder.com/150 ', () => {
+    expect(component.hero.image.url).toBe('https://via.placeholder.com/150');
+  });
+
+  it('should fire on click event', () => {
+    let selectedHero;
+    const heroElement = fixture.debugElement.query(By.css('.hero'));
+    component.chosenAbility.subscribe(hero => selectedHero = hero);
+    heroElement.triggerEventHandler('click', null);
+    expect(selectedHero).toEqual({ name: 'strength', userValue: 32});
+  });
+
+  describe('checking heroes list elements', () => {
+    let allHerosElements;
+    beforeEach(() => {
+      allHerosElements = fixture.debugElement.query(By.all()).nativeElement.querySelectorAll('.hero');
+    });
+
+    it('should list all hero powerstats ', () => {
+      expect(allHerosElements).toBeDefined();
+      expect(allHerosElements.length).toBe(2);
+    });
+
+    it('should have hidden class when is computer', () => {
+      component.hidden = true;
+      fixture.detectChanges();
+      expect(allHerosElements[0].classList.contains('hidden')).toBeTruthy();
+    });
+  });
 });

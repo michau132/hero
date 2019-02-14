@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AppService } from './app.service';
 
 @Component({
   selector: 'app-hero',
   template: `
-    <div *ngIf="hero">
+    <main *ngIf="hero">
       <h2>{{hero.name}}</h2>
       <img class="image" [src]="hero.image.url" />
       <ul>
         <li
+          class="hero"
           *ngFor="let stat of objectKeys(hero.powerstats)"
           [ngClass]="{'hidden': hidden}"
           (click)="chooseAbility({name: stat, userValue: hero.powerstats[stat]})"
@@ -16,7 +16,7 @@ import { AppService } from './app.service';
           {{stat}} : {{hero.powerstats[stat]}}
         </li>
       </ul>
-    </div>
+    </main>
   `,
   styles: [`
   .image {
@@ -39,7 +39,6 @@ export class HeroComponent implements OnInit {
   @Input() hero: any;
   @Input() hidden;
   @Output() chosenAbility = new EventEmitter();
-  @Input() statement;
 
 
 

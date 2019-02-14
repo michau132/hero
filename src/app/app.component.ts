@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from './app.service';
+import { HeroService } from './hero.service';
 
 @Component({
   selector: 'app-root',
@@ -7,72 +7,61 @@ import { AppService } from './app.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  userScore: number = 0;
-  computerScore: number = 0;
-  hidden: boolean = true;
-  statement: string = 'Choose your ability';
+  userScore = 0;
+  computerScore = 0;
+  hidden: boolean;
+  statement: string;
   userHeroId: number;
   computerHeroId: number;
-  constructor(private appService: AppService) { }
+  constructor(private heroService: HeroService) { }
 
   userHero: any;
-  computerHero: any = {
-    powerstats: {
-      durability: 99,
-      strength: 0,
-      speed: 12,
-      power: 45,
-      intelligence: 32,
-      combat: 78
-    },
-    image: {}
-  };
+  computerHero: any;
 
   ngOnInit() {
-    this.userHeroId = this.generateHeroId();
-    this.appService.getHero(this.userHeroId).subscribe(hero => this.userHero = hero);
-
-    this.computerHeroId = this.generateHeroId();
-    this.appService.getHero(this.computerHeroId).subscribe(hero => this.computerHero = hero);
+    this.playRound();
   }
 
   generateHeroId(): number {
     const randomNumber = Math.floor(Math.random() * 731) + 1;
     if (randomNumber === this.userHeroId) {
-      console.log('jestes')
-      return this.generateHeroId()
+      return this.generateHeroId();
     }
-    return randomNumber
+    return randomNumber;
   }
 
   chosenAbility(userAbility) {
+    console.log(userAbility);
+    console.log(this.computerHero);
     if (!this.hidden) {
-      return this.statement = 'Click Next Oponent Button!'
+      return this.statement = 'Click Next Oponent Button!';
     }
     const computerValue = this.computerHero.powerstats[userAbility.name];
     const { userValue } = userAbility;
     if (computerValue > userValue) {
-      this.computerScore++
+      this.computerScore++;
       this.hidden = false;
-      this.statement = "Computer won"
+      this.statement = 'Computer won';
     } else if (computerValue < userValue) {
-      this.userScore++
+      this.userScore++;
       this.hidden = false;
-      this.statement = "You won"
+      this.statement = 'You won';
     } else {
       this.hidden = false;
-      this.statement = "A tie, no one won"
+      this.statement = 'A tie, no one won';
     }
   }
 
-  playAnotherRound() {
+
+
+  playRound() {
     this.hidden = true;
     this.statement = 'Choose your ability';
     this.userHeroId = this.generateHeroId();
-    this.appService.getHero(this.userHeroId).subscribe(hero => this.userHero = hero);
+    this.heroService.getHero(this.userHeroId).subscribe(hero => this.userHero = hero);
 
     this.computerHeroId = this.generateHeroId();
-    this.appService.getHero(this.computerHeroId).subscribe(hero => this.computerHero = hero);
+    this.heroService.getHero(this.computerHeroId).subscribe(hero => this.computerHero = hero);
   }
 
 }

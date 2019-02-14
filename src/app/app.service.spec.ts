@@ -1,26 +1,29 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { AppService } from './app.service';
+import { HeroService } from './hero.service';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('AppService', () => {
-  let service: AppService;
-  let httpMock: HttpTestingController
+describe('HeroService', () => {
+  let injector;
+  let service: HeroService;
+  let httpMock: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AppService]
+      providers: [HeroService]
     });
-    service = TestBed.get(AppService)
-    httpMock = TestBed.get(HttpTestingController)
+    injector = getTestBed();
+    service = injector.get(HeroService);
+    httpMock = injector.get(HttpTestingController);
 
   });
 
-  afterEach(() => {
-    httpMock.verify()
-  })
+  // afterEach(() => {
+  //   httpMock.verify();
+  // });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -39,16 +42,15 @@ describe('AppService', () => {
       name: 'Goku',
       image: {}
     };
-
-    service.getHero('1').subscribe(heroFromApi => {
-      console.log(heroFromApi)
-      expect(heroFromApi.name).toBe('Goku')
-      expect(heroFromApi).toBe(hero)
-    })
+    service.getHero('1').subscribe((heroFromApi: any) => {
+      console.log('aaa');
+      expect(heroFromApi.name).toBe('asdasda');
+      expect(heroFromApi).toBe(hero);
+    });
     // const request = httpMock.expectOne(`${service.url}/1`);
 
-    // expect(request.request.method).toBe('GET')
-    // request.flush(hero)
-  })
+    // expect(request.request.method).toBe('GET');
+    // request.flush(hero);
+  });
 
 });

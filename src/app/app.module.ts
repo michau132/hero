@@ -2,9 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { AppService } from './app.service';
+import { HeroService } from './hero.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HeroComponent} from './hero.component';
+import { RandomNumberService } from './randomNumber.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HeroComponent} from './hero.component';
     HttpClientModule
   ],
   providers: [
-    AppService
+    HeroService,
+    RandomNumberService
   ],
   bootstrap: [AppComponent]
 })
