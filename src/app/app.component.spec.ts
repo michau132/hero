@@ -11,11 +11,10 @@ import { Observable } from 'rxjs';
 describe('AppComponent', () => {
   let fixture;
   let component;
-  let HeroSerivceTest
+  let HeroSerivceTest;
+  let heroServiceSpy;
   beforeEach(async(() => {
-    HeroSerivceTest = {
-      getHero() { return new Observable },
-    }
+    HeroSerivceTest = jasmine.createSpyObj('HeroService', ['getHero']);
     TestBed.configureTestingModule({
       declarations: [
         AppComponent, HeroComponent
@@ -27,32 +26,31 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance
+    component = fixture.componentInstance;
+    heroServiceSpy = HeroSerivceTest.getHero.and.returnValue(new Observable());
   });
 
   it('should be defined', () => {
-    console.log(component)
+    console.log(component);
     expect(component).toBeDefined();
   });
 
   it('should call method playRound on ngOnInit', () => {
     spyOn(component, 'playRound');
     fixture.detectChanges();
-    expect(component.playRound).toHaveBeenCalled()
+    expect(component.playRound).toHaveBeenCalled();
   });
 
   it('should call playRound when clicked on button', () => {
-    const button = fixture.debugElement.query(By.css('button'))
+    const button = fixture.debugElement.query(By.css('button'));
     spyOn(component, 'playRound');
     button.triggerEventHandler('click', null);
-    expect(component.playRound).toHaveBeenCalled()
+    expect(component.playRound).toHaveBeenCalled();
   });
 
   it('should call HeroServiceTest method gethero', () => {
-    fixture.detectChanges()
-    const spy = spyOn(component, 'heroService')
     component.playRound();
-    expect(spy).toHaveBeenCalled()
+    expect(heroServiceSpy).toHaveBeenCalled();
   });
 
 
